@@ -1,0 +1,95 @@
+<!-- 21. TODO App
+Create a simple to-do app to add TODO items to the list through an input field and a button. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .todo-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      .todo-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+      }
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Todo App</h1>
+      <div>
+        <input type="text" id="todoInput" placeholder="Add a new todo" />
+        <button onclick="addTodo()">Add</button>
+      </div>
+      <div class="button-container">
+        <button onclick="sortTodos()">Sort A-Z</button>
+        <button onclick="clearTodos()">Clear All</button>
+      </div>
+      <ul class="todo-list" id="todoList">
+        <!-- Todo items will be added here -->
+      </ul>
+    </div>
+
+    <script>
+      const todoList = document.getElementById("todoList");
+
+      function addTodo() {
+        const todoInput = document.getElementById("todoInput");
+        const todoText = todoInput.value.trim();
+
+        if (todoText !== "") {
+          const li = document.createElement("li");
+          li.innerHTML = `
+                    <span>${todoText}</span>
+                    <button onclick="removeTodo(this)">Remove</button>
+                `;
+          todoList.appendChild(li);
+          todoInput.value = "";
+        }
+      }
+
+      function removeTodo(button) {
+        const listItem = button.parentElement;
+        todoList.removeChild(listItem);
+      }
+
+      function sortTodos() {
+        const items = Array.from(todoList.querySelectorAll("li"));
+        items.sort((a, b) => {
+          const textA = a.textContent.toLowerCase().trim();
+          const textB = b.textContent.toLowerCase().trim();
+          return textA.localeCompare(textB);
+        });
+        todoList.innerHTML = "";
+        items.forEach((item) => todoList.appendChild(item));
+      }
+
+      function clearTodos() {
+        todoList.innerHTML = "";
+      }
+    </script>
+  </body>
+</html>
